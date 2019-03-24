@@ -88,7 +88,7 @@ const didClickRegister = async (e) => {
  */
 const getCredentialRequestOptionsFromServer = async (formData) => {
     return await fetch_json(
-        "/webauthn_begin_assertion",
+        "/assertion/options",
         {
             method: "POST",
             body: formData
@@ -125,7 +125,7 @@ const transformCredentialRequestOptions = (credentialRequestOptionsFromServer) =
  */
 const getCredentialCreateOptionsFromServer = async (formData) => {
     return await fetch_json(
-        "/webauthn_begin_activate",
+        "/attestation/options",
         {
             method: "POST",
             body: formData
@@ -245,7 +245,7 @@ const postNewAssertionToServer = async (credentialDataForServer) => {
     });
     
     return await fetch_json(
-        "/verify_credential_info", {
+        "/attestation/result", {
         method: "POST",
         body: formData
     });
@@ -284,7 +284,7 @@ const postAssertionToServer = async (assertionDataForServer) => {
     });
     
     return await fetch_json(
-        "/verify_assertion", {
+        "/assertion/result", {
         method: "POST",
         body: formData
     });

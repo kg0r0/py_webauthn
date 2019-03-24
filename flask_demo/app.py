@@ -54,7 +54,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/webauthn_begin_activate', methods=['POST'])
+@app.route('/attestation/options', methods=['POST'])
 def webauthn_begin_activate():
     # MakeCredentialOptions
     username = request.form.get('register_username')
@@ -94,7 +94,7 @@ def webauthn_begin_activate():
     return jsonify(make_credential_options.registration_dict)
 
 
-@app.route('/webauthn_begin_assertion', methods=['POST'])
+@app.route('/assertion/options', methods=['POST'])
 def webauthn_begin_assertion():
     username = request.form.get('login_username')
 
@@ -125,7 +125,7 @@ def webauthn_begin_assertion():
     return jsonify(webauthn_assertion_options.assertion_dict)
 
 
-@app.route('/verify_credential_info', methods=['POST'])
+@app.route('/attestation/result', methods=['POST'])
 def verify_credential_info():
     challenge = session['challenge']
     username = session['register_username']
@@ -194,7 +194,7 @@ def verify_credential_info():
     return jsonify({'success': 'User successfully registered.'})
 
 
-@app.route('/verify_assertion', methods=['POST'])
+@app.route('/assertion/result', methods=['POST'])
 def verify_assertion():
     challenge = session.get('challenge')
     assertion_response = request.form
