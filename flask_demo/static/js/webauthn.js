@@ -171,7 +171,6 @@ const didClickLogin = async (e) => {
     const formData = new FormData(form);
 
     // post the login data to the server to retrieve the PublicKeyCredentialRequestOptions
-    let credentialCreateOptionsFromServer;
     try {
         credentialRequestOptionsFromServer = await getCredentialRequestOptionsFromServer(formData);
     } catch (err) {

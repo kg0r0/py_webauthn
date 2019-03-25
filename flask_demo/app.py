@@ -38,7 +38,6 @@ ORIGIN = 'https://localhost:5000'
 # placed in TRUST_ANCHOR_DIR.
 TRUST_ANCHOR_DIR = 'trusted_attestation_roots'
 
-
 @login_manager.user_loader
 def load_user(user_id):
     try:
@@ -57,8 +56,12 @@ def index():
 @app.route('/attestation/options', methods=['POST'])
 def webauthn_begin_activate():
     # MakeCredentialOptions
-    username = request.form.get('register_username')
-    display_name = request.form.get('register_display_name')
+    if request.headers['Content-Type'] == 'application/json':
+        username =  request.get_json()['username']
+        display_name =  request.get_json()['displayName']
+    else:
+        username = request.form.get('username')
+        display_name = request.form.get('displayName')
 
     if not util.validate_username(username):
         return make_response(jsonify({'fail': 'Invalid username.'}), 401)
@@ -93,10 +96,13 @@ def webauthn_begin_activate():
 
     return jsonify(make_credential_options.registration_dict)
 
-
 @app.route('/assertion/options', methods=['POST'])
 def webauthn_begin_assertion():
-    username = request.form.get('login_username')
+
+    if request.headers['Content-Type'] == 'application/json':
+        username =  request.get_json()['username']
+    else:
+        username = request.form.get('username')
 
     if not util.validate_username(username):
         return make_response(jsonify({'fail': 'Invalid username.'}), 401)
@@ -218,7 +224,10 @@ def verify_assertion():
     try:
         sign_count = webauthn_assertion_response.verify()
     except Exception as e:
-        return jsonify({'fail': 'Assertion failed. Error: {}'.format(e)})
+        return jsonify({
+            'status': 'fail',
+            'errorMessage': 'Assertion failed. Error: {}'.format(e)
+            })
 
     # Update counter.
     user.sign_count = sign_count
@@ -228,6 +237,8 @@ def verify_assertion():
     login_user(user)
 
     return jsonify({
+        'status': 'ok',
+        'errorMessage': '',
         'success':
         'Successfully authenticated as {}'.format(user.username)
     })

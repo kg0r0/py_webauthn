@@ -17,10 +17,10 @@
         {% else %}
             <h2>Register</h2>
             <form id="register-form" name="register" method="get">
-                <label for="register_username">Username:</label>
-                <input name="register_username"></input>
-                <label for="register_display_name">Display Name:</label>
-                <input name="register_display_name"></input>
+                <label for="username">Username:</label>
+                <input name="username"></input>
+                <label for="displayName">Display Name:</label>
+                <input name="displayName"></input>
                 <button id="register" type="submit">Register with WebAuthn</button>
             </form>
 
@@ -28,8 +28,8 @@
 
             <h2>Log In</h2>
             <form id="login-form" name="login" method="get">
-                <label for="login_username">Username:</label>
-                <input name="login_username"></input>
+                <label for="username">Username:</label>
+                <input name="username"></input>
                 <button id="login" type="submit">Log in with WebAuthn</button>
             </form>
         {% endif %}
